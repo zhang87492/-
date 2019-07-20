@@ -17,8 +17,8 @@ class MapSite(metaclass=ABCMeta):
 class Door(MapSite):
 	def __init__(self, r1 = 0, r2 = 0):
 		self._type = 'd'
-		self.r1 = r1
-		self.r2 = r2
+		self._r1 = r1
+		self._r2 = r2
 
 	@property
 	def r1(self):
@@ -38,7 +38,7 @@ class Room(MapSite):
 			super(Room, self).__init__()
 			self._roomNumber = roomNO
 			self._sides = {}
-			self._type = 'R'
+			self._type = roomNO
 
 		@property
 		def roomNumber(self):
@@ -50,7 +50,8 @@ class Room(MapSite):
 		def setSide(self, Direction, MapSite):
 			self._sides[Direction] = MapSite
 
-__GLOBAL_REPLACE__ = '#'
+# __GLOBAL_REPLACE__ = '#'
+__GLOBAL_REPLACE__ = ' '
 class Maze():
 	"""docstring for Maze"""
 	def __init__(self, width, height):
@@ -70,14 +71,20 @@ class Maze():
 
 	__repr__ = __str__
 
-	def AddRoom(self, room):
+	def AddRoom(self, room, north = Wall(), east = Wall(), south = Wall(), west = Wall()):
 		n = room.roomNumber
 
-		rh = math.floor(n/self._width)
-		rw = int(n%self._width)
-		# print(rh, rw)
-		# print(rh*2+1, rw*2+1)
-		self._sz[rh*2+1][rw*2+1] = room.type
+		rh = math.floor(n/self._width) * 2 + 1
+		rw = int(n%self._width) * 2 +1
+		self._sz[rh][rw] = room.type
+		if north :
+		 	self._sz[rh-1][rw]= north.type
+		if east:
+		 	self._sz[rh][rw+1] = east.type
+		if south :
+			self._sz[rh+1][rw] = south.type
+		if west :
+			self._sz[rh][rw-1] = west.type
 
 if __name__ == '__main__':
 	# 1 x 2 迷宫
@@ -85,6 +92,6 @@ if __name__ == '__main__':
 	r1 = Room(0)
 	r2 = Room(1)
 	d = Door(r1, r2)
-	m.AddRoom(r1)
-	m.AddRoom(r2)
+	m.AddRoom(r1, east = d)
+	m.AddRoom(r2, west = d)
 	print(m)
