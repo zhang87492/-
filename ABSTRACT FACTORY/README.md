@@ -13,20 +13,47 @@
      [MazeFactory.py](MazeFactory.py)
      
 - 设计模式书籍里的迷宫，具体实现可参考代码 [EMployeeDao.py](EMployeeDao.py)
-   
+  
 2. 画出通用类图。![AbstractFactory](assets/Main.jpg)
 
     - AbstractFactory:
+      
       - 声明一个创建抽象产品对象的操作接口。
+      
     - ConcreteFactory:
+      
       - 实现创建具体产品对象的操作。
-    - AbstractFactory:
+      
+    - AbstractProduct:
+      
       - 为一类产品对象声明一个接口。
+      
     - ConcreteProduct:
       - 定义一个将被相应的具体工厂创建的产品对象。
       - 实现AbstractProduct的接口。
+      
     - Client：
+      
       - 仅使用由AbstractFactory和AbstractProduct类声明的接口。
+      
+      
+      
+    - 抽象工厂里的例子
+
+      - 迷宫游戏的角色说明
+        - 代码里面没有设定AbstractFactory和ConcreteFactory。也可以说是client或者main就是这个角色。
+        - AbstractProduct就是基础的迷宫设置类Maze
+        - ProductA就是AbstractProduct的一个产品对象。
+      - 数据库连接类
+        - AbstractFactory
+          - IDBFactory
+        - ConcreteFactory
+          - MysqlDBFactory和OraclDBFactory
+        - ABstractProduct
+          - IDBCommand和IDBReader和IDBConnection
+        - ConcreProduct
+          - OraclCommand和OraclReader和OraclConnect
+          - MysqlCommand和MysqlReader和MysqlConnect
 
 3. 适用性和意图：
     意图：提供一个创建一系列相关或相互依赖对象的接口，而无需指定它们具体的类。
